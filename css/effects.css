@@ -1,0 +1,115 @@
+/* effects.css —— 故障、闪烁、抖动、扫描、打字机等 */
+
+/* 屏幕轻微呼吸 */
+#crt::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:52;
+  background:rgba(63,245,197,0.012);
+  animation:flicker 6s infinite;
+}
+@keyframes flicker{
+  0%,100%{opacity:.4;}
+  3%{opacity:.9;}
+  6%{opacity:.4;}
+  40%{opacity:.4;}
+  42%{opacity:.7;}
+  44%{opacity:.4;}
+}
+
+/* 文字故障效果 */
+.glitch{
+  position:relative;
+  color:var(--accent);
+}
+.glitch::before,.glitch::after{
+  content:attr(data-text);
+  position:absolute;
+  left:0;top:0;
+  width:100%;
+  overflow:hidden;
+}
+.glitch::before{
+  color:#ff4d5e;
+  animation:glitch-a .5s infinite steps(1);
+  clip-path:inset(0 0 55% 0);
+}
+.glitch::after{
+  color:#3fd0f5;
+  animation:glitch-b .45s infinite steps(1);
+  clip-path:inset(55% 0 0 0);
+}
+@keyframes glitch-a{
+  0%{transform:translate(0);}
+  20%{transform:translate(-2px,1px);}
+  40%{transform:translate(2px,-1px);}
+  60%{transform:translate(-1px,0);}
+  100%{transform:translate(0);}
+}
+@keyframes glitch-b{
+  0%{transform:translate(0);}
+  25%{transform:translate(2px,-1px);}
+  50%{transform:translate(-2px,1px);}
+  75%{transform:translate(1px,1px);}
+  100%{transform:translate(0);}
+}
+
+/* 抖动 */
+.shake{animation:shake .4s;}
+@keyframes shake{
+  0%,100%{transform:translate(0);}
+  20%{transform:translate(-4px,2px);}
+  40%{transform:translate(4px,-2px);}
+  60%{transform:translate(-3px,1px);}
+  80%{transform:translate(3px,-1px);}
+}
+
+/* 闪红（错误） */
+.flash-red{animation:flashred .5s;}
+@keyframes flashred{
+  0%,100%{background:transparent;}
+  30%{background:rgba(255,77,94,.12);}
+}
+
+/* 淡入 */
+.fade-in{animation:fadein .5s ease both;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* 打字机闪烁块由 JS 控制 */
+
+/* 开机扫描条 */
+.boot-scan{
+  position:fixed;
+  left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  box-shadow:0 0 18px var(--accent);
+  z-index:60;
+  animation:scanmove 2.2s linear infinite;
+  opacity:.5;
+  pointer-events:none;
+}
+@keyframes scanmove{
+  0%{top:0;}
+  100%{top:100%;}
+}
+
+/* 章节过场横线 */
+.interlude-line{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(63,245,197,.5),transparent);
+  margin:24px auto;
+  width:60%;
+}
+
+/* 脉冲文字 */
+.pulse{animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{
+  0%,100%{opacity:1;text-shadow:0 0 14px rgba(63,245,197,.5);}
+  50%{opacity:.55;text-shadow:0 0 4px rgba(63,245,197,.2);}
+}
+
+/* 错误输入抖动行 */
+.line.err-shake{animation:shake .35s;}

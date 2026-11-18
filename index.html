@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>回声档案 · ECHO ARCHIVE</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/terminal.css">
+<link rel="stylesheet" href="css/effects.css">
+<link rel="stylesheet" href="css/horror.css">
+</head>
+<body>
+<div id="crt">
+  <div id="scanlines"></div>
+  <div id="vignette"></div>
+
+  <div id="app">
+    <header id="hud">
+      <span class="hud-left">◈ ECHO ARCHIVE</span>
+      <span class="hud-mid" id="hud-clock">00:00:00</span>
+      <span class="hud-right">
+        <span id="hud-signal" class="signal">SIGNAL ▂▃▅▇</span>
+        <button id="btn-sound" class="hud-btn" title="声音开关">♪</button>
+        <button id="btn-reset" class="hud-btn" title="重置档案">↺</button>
+      </span>
+    </header>
+
+    <main id="screen">
+      <div id="output"></div>
+      <div id="inputline" class="hidden">
+        <span class="prompt">›</span>
+        <input id="cmd" type="text" autocomplete="off" spellcheck="true" autocapitalize="off" />
+        <span id="caret" class="caret">█</span>
+      </div>
+      <div id="actions" class="hidden"></div>
+    </main>
+
+    <footer id="progress">
+      <div class="key-dots" id="keydots"></div>
+    </footer>
+  </div>
+
+  <div id="fragment-flash" class="hidden"><span id="fragment-char"></span></div>
+
+  <!-- ===== 恐怖层 ===== -->
+  <div id="blood-layer"></div>
+  <div id="static-layer"></div>
+  <div id="ghost-layer" class="hidden"></div>
+  <div id="face-flash" class="hidden"><div class="face-shape"></div></div>
+  <div id="presence" class="hidden">
+    <div class="presence-text"></div>
+  </div>
+  <div id="heartbeat" class="hidden"></div>
+  <div id="vhs-timestamp" class="hidden">REC ●</div>
+  <div id="fake-alert" class="hidden">
+    <div class="fa-title">SYSTEM ALERT</div>
+    <div class="fa-body"></div>
+  </div>
+  <div id="blackout" class="hidden">
+    <div class="bo-text"></div>
+  </div>
+</div>
+
+<script src="js/core/state.js"></script>
+<script src="js/core/audio.js"></script>
+<script src="js/core/typewriter.js"></script>
+<script src="js/core/effects.js"></script>
+<script src="js/core/horror.js"></script>
+<script src="js/core/input.js"></script>
+<script src="js/data/story.js"></script>
+<script src="js/data/puzzles.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

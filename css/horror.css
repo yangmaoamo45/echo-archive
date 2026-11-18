@@ -1,0 +1,363 @@
+/* horror.css —— 恐怖层：血雾 / 静电 / 闪脸 / 在场感 / 心跳 / VHS */
+
+:root{
+  --horror:0;
+}
+
+/* ---------- 血雾层 ---------- */
+#blood-layer{
+  position:fixed;
+  inset:0;
+  z-index:40;
+  pointer-events:none;
+  opacity:.08;
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(120,0,10,.55), transparent 60%),
+    radial-gradient(ellipse at 50% -20%, rgba(90,0,10,.35), transparent 55%);
+  transition:opacity 2s ease;
+  mix-blend-mode:screen;
+}
+#blood-layer.pulse{
+  animation:bloodpulse 1.4s ease-out;
+}
+@keyframes bloodpulse{
+  0%{opacity:.08;}
+  18%{opacity:calc(var(--pulse,0.5) * 0.9);}
+  100%{opacity:.08;}
+}
+
+/* ---------- 静电噪点层 ---------- */
+#static-layer{
+  position:fixed;
+  inset:0;
+  z-index:45;
+  pointer-events:none;
+  opacity:0;
+  background-image:
+    repeating-radial-gradient(circle at 20% 30%, rgba(255,255,255,.14) 0 1px, transparent 1px 3px),
+    repeating-radial-gradient(circle at 70% 60%, rgba(255,255,255,.1) 0 1px, transparent 1px 4px);
+  background-size:6px 6px, 9px 9px;
+  mix-blend-mode:overlay;
+  transition:opacity .06s;
+}
+#static-layer.on{
+  opacity:.55;
+  animation:staticjitter .08s steps(2) infinite;
+}
+@keyframes staticjitter{
+  0%{transform:translate(0,0);}
+  50%{transform:translate(-2px,1px);}
+  100%{transform:translate(1px,-1px);}
+}
+
+/* ---------- 闪脸层 ---------- */
+#face-flash{
+  position:fixed;
+  inset:0;
+  z-index:300;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000;
+  opacity:0;
+  pointer-events:none;
+}
+#face-flash.hidden{display:none;}
+#face-flash.show{opacity:1;animation:facein .2s;}
+@keyframes facein{
+  0%{opacity:0;filter:brightness(4) contrast(1.2);}
+  100%{opacity:1;filter:brightness(1);}
+}
+#face-flash.show .face-shape{
+  /* 闪现瞬间提亮，保证看得清、够吓人 */
+  filter:blur(1px) contrast(1.5) brightness(2.1);
+}
+#face-flash.show .face-shape::before{
+  /* 光晕放在脸形上，避免容器方形边框露出 */
+  box-shadow:0 0 160px 40px rgba(255,240,225,.28);
+}
+/* 纯 CSS 合成的脸：苍白、空洞的眼窝、模糊的轮廓 */
+.face-shape{
+  width:min(60vw,420px);
+  height:min(80vh,560px);
+  position:relative;
+  filter:blur(1px) contrast(1.4);
+  animation:faceflicker .09s steps(2) infinite;
+}
+.face-shape::before{
+  /* 脸部轮廓 */
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 42% 50% at 50% 42%, #cfc8bd 0%, #8f857a 55%, transparent 72%);
+  border-radius:48% 48% 44% 44% / 55% 55% 40% 40%;
+  opacity:.9;
+  box-shadow:0 0 120px rgba(200,190,175,.18);
+}
+.face-shape::after{
+  /* 两只空洞的眼窝 + 嘴 */
+  content:"";
+  position:absolute;
+  left:50%;
+  top:0;
+  width:100%;
+  height:100%;
+  transform:translateX(-50%);
+  background:
+    /* 左眼 */
+    radial-gradient(ellipse 9% 7% at 38% 40%, #000 0%, #000 70%, transparent 80%),
+    /* 右眼 */
+    radial-gradient(ellipse 9% 7% at 62% 40%, #000 0%, #000 70%, transparent 80%),
+    /* 嘴巴（张开的黑洞） */
+    radial-gradient(ellipse 12% 16% at 50% 66%, #000 0%, #000 60%, transparent 75%);
+}
+@keyframes faceflicker{
+  0%{opacity:.92;transform:scale(1.02);}
+  100%{opacity:1;transform:scale(1);}
+}
+
+/* ---------- 在场感文字 ---------- */
+#presence{
+  position:fixed;
+  inset:0;
+  z-index:250;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .6s;
+}
+#presence.hidden{display:none;}
+#presence.show{opacity:1;}
+.presence-text{
+  font-family:var(--font-cn);
+  font-size:clamp(20px,4vw,34px);
+  letter-spacing:.3em;
+  color:#d8cfc4;
+  text-shadow:0 0 30px rgba(0,0,0,.9),0 0 8px rgba(255,255,255,.15);
+  animation:presencebreath 2.6s ease-in-out;
+  text-align:center;
+  padding:0 20px;
+}
+.presence-text.dark{
+  color:#7a0d14;
+  text-shadow:0 0 40px rgba(120,0,10,.9),0 0 12px rgba(255,0,20,.3);
+  animation:presencedark 3s ease-in-out;
+}
+@keyframes presencebreath{
+  0%{opacity:0;letter-spacing:.1em;filter:blur(6px);}
+  25%{opacity:.9;filter:blur(0);}
+  70%{opacity:.85;letter-spacing:.32em;}
+  100%{opacity:0;letter-spacing:.5em;filter:blur(4px);}
+}
+@keyframes presencedark{
+  0%{opacity:0;transform:scale(1.1);}
+  30%{opacity:1;transform:scale(1);}
+  50%{opacity:.4;}
+  52%{opacity:1;}
+  100%{opacity:0;transform:scale(.96);}
+}
+
+/* ---------- 心跳红晕 ---------- */
+#heartbeat{
+  position:fixed;
+  inset:0;
+  z-index:39;
+  pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(120,0,10,.4) 100%);
+  opacity:0;
+}
+#heartbeat.hidden{display:none;}
+#heartbeat.beat{animation:hb .5s ease-out;}
+@keyframes hb{
+  0%{opacity:0;}
+  20%{opacity:.7;}
+  100%{opacity:0;}
+}
+
+/* ---------- VHS 时间戳 ---------- */
+#vhs-timestamp{
+  position:fixed;
+  right:22px;
+  bottom:16px;
+  z-index:47;
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  color:rgba(220,210,200,.5);
+  text-shadow:0 0 8px rgba(0,0,0,.9);
+  pointer-events:none;
+  font-variant-numeric:tabular-nums;
+}
+#vhs-timestamp.hidden{display:none;}
+#vhs-timestamp.blink{color:rgba(255,60,60,.55);}
+
+/* ---------- 恐怖强化：正文扭曲 ---------- */
+.line.creep{
+  color:#c9bfb4;
+  font-family:var(--font-cn);
+  letter-spacing:.06em;
+  text-shadow:0 0 14px rgba(0,0,0,.6);
+}
+.line.creep-big{
+  font-family:var(--font-cn);
+  font-size:19px;
+  color:#b8323c;
+  letter-spacing:.12em;
+  text-shadow:0 0 24px rgba(120,0,10,.7),0 0 6px rgba(255,0,20,.2);
+}
+
+/* 屏幕在紧张时的轻微呼吸抖动 */
+body.tense #screen{
+  animation:tensebreath 4.2s ease-in-out infinite;
+}
+@keyframes tensebreath{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.004);}
+}
+
+/* 扫描线在恐怖值高时更明显 */
+body.tense #scanlines{opacity:.75;}
+
+/* 数字/字母偶尔倒错 */
+@keyframes corrupt{
+  0%,100%{transform:none;filter:none;}
+  25%{transform:translateX(-3px) skewX(2deg);filter:hue-rotate(120deg) contrast(1.4);}
+  50%{transform:translateX(3px) skewX(-2deg);}
+  75%{transform:translateX(-1px);}
+}
+.corrupt{animation:corrupt .38s steps(2);}
+
+/* ---------- 鬼影层：偶尔从角落飘过的人形 ---------- */
+#ghost-layer{
+  position:fixed;
+  inset:0;
+  z-index:60;
+  pointer-events:none;
+  opacity:0;
+  background:
+    radial-gradient(ellipse 18px 26px at 50% 20%, rgba(10,10,12,.95) 0%, rgba(10,10,12,.6) 40%, transparent 70%),
+    radial-gradient(ellipse 60px 140px at 50% 75%, rgba(8,8,10,.9) 0%, rgba(8,8,10,.5) 45%, transparent 72%);
+  background-repeat:no-repeat;
+  filter:blur(2px);
+  transition:opacity 1.6s ease;
+}
+#ghost-layer.hidden{display:none;}
+#ghost-layer.show{opacity:.55;}
+@keyframes ghostdrift{
+  0%{background-position:20% 0%, 20% 0%;}
+  100%{background-position:80% 0%, 80% 0%;}
+}
+#ghost-layer.drift{animation:ghostdrift 8s linear;}
+
+/* ---------- 伪系统弹窗 ---------- */
+#fake-alert{
+  position:fixed;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(.96);
+  z-index:280;
+  min-width:320px;
+  max-width:82vw;
+  background:rgba(12,4,6,.96);
+  border:1px solid rgba(255,60,70,.45);
+  box-shadow:0 0 40px rgba(140,0,10,.5), inset 0 0 30px rgba(80,0,6,.4);
+  padding:0;
+  font-family:var(--font-mono);
+  opacity:0;
+  transition:opacity .18s, transform .18s;
+  pointer-events:none;
+}
+#fake-alert.hidden{display:none;}
+#fake-alert.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+.fa-title{
+  background:rgba(120,0,12,.55);
+  color:#ffb9bd;
+  font-size:11px;
+  letter-spacing:.24em;
+  padding:7px 14px;
+  border-bottom:1px solid rgba(255,60,70,.35);
+  text-transform:uppercase;
+}
+.fa-body{
+  padding:18px 18px 16px;
+  color:#d9b8ba;
+  font-family:var(--font-cn);
+  font-size:14px;
+  line-height:1.8;
+  white-space:pre-wrap;
+}
+
+/* ---------- 全屏镜像翻转（恐怖桥段） ---------- */
+#crt.flip{
+  animation:flipscreen 1.8s ease-in-out;
+}
+@keyframes flipscreen{
+  0%{transform:scaleX(1);}
+  35%{transform:scaleX(-1);}
+  65%{transform:scaleX(-1);}
+  100%{transform:scaleX(1);}
+}
+
+/* ---------- 画面抽搐（血闪 + 上下撕裂） ---------- */
+#crt.seizure{
+  animation:seizure .5s steps(3);
+}
+@keyframes seizure{
+  0%{transform:translate(0);filter:none;}
+  20%{transform:translate(-6px,2px) skewX(3deg);filter:hue-rotate(-25deg) contrast(1.6);}
+  40%{transform:translate(6px,-3px) skewX(-3deg);filter:invert(.12);}
+  60%{transform:translate(-3px,1px);filter:contrast(1.3);}
+  80%{transform:translate(3px,-1px) hue-rotate(15deg);}
+  100%{transform:translate(0);}
+}
+
+/* ---------- 文字被"改写"的残留痕迹 ---------- */
+.line.rewritten{
+  color:#7a0d14 !important;
+  text-shadow:0 0 12px rgba(120,0,10,.6);
+  animation:rewrite .5s steps(1);
+}
+@keyframes rewrite{
+  0%{opacity:.2;letter-spacing:.4em;}
+  50%{opacity:1;letter-spacing:.02em;}
+  100%{opacity:1;letter-spacing:0;}
+}
+
+/* ---------- 假死机：全屏黑掉，只留一行字 ---------- */
+#blackout{
+  position:fixed;
+  inset:0;
+  z-index:290;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .12s;
+}
+#blackout.hidden{display:none;}
+#blackout.show{opacity:1;}
+#blackout .bo-text{
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:#3a4a46;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+#blackout .bo-text.warn{
+  color:#6a0d14;
+  animation:blink 1.2s steps(1) infinite;
+}
+
+/* ---------- 输入框里"另一个人的"打字残影 ---------- */
+#cmd.ghost-typed{color:#b8323c;text-shadow:0 0 10px rgba(140,0,10,.5);}
+
+/* ---------- HUD 被入侵 ---------- */
+#hud-signal.watching{color:#b8323c;animation:blink 1.4s steps(1) infinite;}
+#hud-left.corrupted{color:#b8323c;letter-spacing:.4em;}
+
+
